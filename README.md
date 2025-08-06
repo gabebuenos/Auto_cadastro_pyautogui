@@ -1,4 +1,5 @@
 Como a automação funciona?
+
 O script utiliza três bibliotecas principais:
 
 openpyxl: Lê os dados de uma planilha chamada Planilha_Produtoss.xlsx. O código percorre cada linha da planilha, a partir da segunda linha (a primeira linha é geralmente o cabeçalho).
