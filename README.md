@@ -1,65 +1,46 @@
-Como a automação funciona?
+# 🤖 Automação de Cadastro de Produtos via Interface Gráfica
 
-O script utiliza três bibliotecas principais:
+Este script Python foi desenvolvido para automatizar o processo de cadastro de produtos em um sistema, lendo os dados diretamente de uma planilha Excel e simulando ações de usuário (mouse e teclado) para preencher os campos.
 
-openpyxl: Lê os dados de uma planilha chamada Planilha_Produtoss.xlsx. O código percorre cada linha da planilha, a partir da segunda linha (a primeira linha é geralmente o cabeçalho).
+---
 
-pyperclip: Copia o valor de cada célula da planilha para a área de transferência.
+## ⚙️ Como a Automação Funciona?
 
-pyautogui: Simula ações do mouse e do teclado para interagir com a interface de um sistema.
+O script realiza uma série de ações para extrair informações da planilha e inseri-las na interface gráfica do sistema (RPA - Robotic Process Automation).
 
-pyautogui.click(): Clica em coordenadas específicas na tela para selecionar campos de preenchimento.
+### 🛠️ Bibliotecas Principais
 
-pyautogui.hotkey('ctrl', 'v'): Cola o valor que foi copiado para a área de transferência no campo selecionado.
+O processo é baseado no uso de três bibliotecas Python que trabalham em conjunto:
 
-pyautogui.scroll(): Rola a tela para cima ou para baixo para que mais campos fiquem visíveis.
+* **`openpyxl`**: É utilizada para **ler e processar** os dados contidos na planilha `Planilha_Produtoss.xlsx`. O script percorre cada **linha** da planilha, tratando cada linha como um novo produto a ser cadastrado, começando a partir da segunda linha (ignorando o cabeçalho).
+* **`pyperclip`**: É a ponte entre a planilha e o sistema. Ela **copia** o valor de cada célula da planilha para a **área de transferência** (clipboard) do sistema operacional.
+* **`pyautogui`**: É o motor da automação. Ele **simula ações humanas** (mouse e teclado) para interagir com o sistema:
+    * `pyautogui.click(x, y)`: Clica em coordenadas $(x, y)$ específicas na tela para selecionar o campo de preenchimento.
+    * `pyautogui.hotkey('ctrl', 'v')`: **Cola** o dado que está na área de transferência no campo selecionado.
+    * `pyautogui.scroll(valor)`: Rola a tela (para cima ou para baixo) para que mais campos de cadastro fiquem visíveis.
 
-O script extrai um dado (como o nome do produto) da planilha, copia esse dado, clica na posição exata onde o campo "nome do produto" está na tela e cola a informação. Ele repete esse processo para todos os campos, como descrição, categoria, preço, etc., e para cada linha (produto) da planilha.
+### 📝 Fluxo Detalhado
 
-Existem também alguns controles específicos:
+O script opera em um loop por cada produto na planilha:
 
-time.sleep(3): Pausa o script por 3 segundos para dar tempo para o sistema carregar ou para a tela rolar, garantindo que o próximo comando seja executado corretamente.
+1.  **Extração e Cópia**: Um dado específico (ex: Nome do Produto) é lido da planilha e copiado para a área de transferência usando o `pyperclip`.
+2.  **Interação e Colagem**: O `pyautogui.click()` simula um clique na posição exata do campo "Nome do Produto" na tela. Em seguida, `pyautogui.hotkey('ctrl', 'v')` cola o valor copiado.
+3.  **Repetição**: Este ciclo se repete para todos os campos do produto (Descrição, Categoria, Preço, etc.) e, depois, para todos os produtos (linhas) da planilha.
 
-Seleção de Tamanho: O script inclui uma lógica condicional (if/elif/else) para selecionar o tamanho do produto (Pequeno, Médio, Grande) clicando em posições diferentes, dependendo do valor na planilha. Isso é útil para menus de seleção.
+### ➕ Controles Específicos
 
-Como usar a automação
-Para usar esta automação, você precisará preparar seu ambiente:
+* **Pausas Estratégicas (`time.sleep(3)`)**: O script inclui pausas de 3 segundos para garantir que o sistema de cadastro tenha tempo suficiente para carregar, processar a entrada ou rolar a tela antes que o próximo comando de clique/colagem seja executado.
+* **Seleção Condicional (Tamanho)**: Uma lógica `if/elif/else` é implementada para lidar com campos de seleção (como `Pequeno`, `Médio`, `Grande`). O script clica em coordenadas diferentes na tela, dependendo do valor lido na célula da planilha para esse campo.
 
-Instale as bibliotecas necessárias:
+---
 
-Bash
+## 🚀 Como Usar a Automação
 
+Para rodar o script com sucesso, você deve preparar seu ambiente e ajustar as configurações específicas da sua tela.
+
+### 1. Instalação de Bibliotecas
+
+Abra seu terminal ou prompt de comando e instale as dependências necessárias:
+
+```bash
 pip install openpyxl pyperclip pyautogui
-Organize sua planilha:
-
-Crie uma planilha no Excel com o nome Planilha_Produtoss.xlsx.
-
-Renomeie a aba (sheet) para Planilha1.
-
-Organize as colunas na mesma ordem em que o script espera os dados:
-
-Coluna A: Nome do produto
-
-Coluna B: Descrição
-
-Coluna C: Categoria
-
-... e assim por diante. A ordem é crucial.
-
-Ajuste as coordenadas:
-
-As coordenadas (1225,352, por exemplo) são específicas para a resolução da sua tela e a posição exata da janela do sistema de cadastro. Você precisará ajustá-las para que o mouse clique nos lugares certos no seu computador.
-
-Para descobrir as coordenadas, use o próprio pyautogui. Abra o terminal, digite python para entrar no interpretador e execute:
-
-Python
-
-import pyautogui
-pyautogui.displayMousePosition()
-Mova o mouse para os campos que você quer preencher e anote as coordenadas X e Y. Depois, substitua os valores no código.
-
-Execute o script:
-
-Abra o sistema de cadastro na primeira tela de preenchimento.
-
-Execute o script Python. Importante: Não mexa no mouse nem no teclado enquanto o script estiver rodando para não interromper a automação.
